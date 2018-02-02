@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/test.css">
+    <script>
+        (function autoView(userAgent){
+            var screen_w=parseInt(window.screen.width)
+                ,scale=screen_w/630;
+
+            var head = document.getElementsByTagName('head')[0];
+            if(/Android (\d+\.\d+)/.test(userAgent)){
+                var version=parseFloat(RegExp.$1);
+                head.innerHTML+=(version>2.3?'<meta id="auto_view" name="viewport" content="width=640, initial-scale = '+scale+',user-scalable=1, minimum-scale = '+scale+', maximum-scale = '+scale+', target-densitydpi=device-dpi">':'<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }else{
+                head.innerHTML+=('<meta id="auto_view" name="viewport" content="width=640, initial-scale = '+scale+' ,minimum-scale = '+scale+', maximum-scale = '+scale+', user-scalable=no, target-densitydpi=device-dpi">');
+            };
+        })(navigator.userAgent)
+    </script>
+</head>
+<body>
+<div id="pages-container" class="pages-container">
+    <div class="page page1">1</div>
+    <div class="page page2">2</div>
+    <div class="page page3">3</div>
+    <div class="page page4">4</div>
+</div>
+<script>
+   /* window.onload=function(){
+        var swiper=document.getElementById('pages-container');
+
+        var startX;
+        var endX;
+        var touchstart = function (e){
+            startX=e.touches[0].pageX;
+        }
+
+        var touchmove = function (e) {
+            e.preventDefault();
+            var offsetX=e.touches[0].pageX - startX;
+            console.log(offsetX);
+        }
+
+        var touchend = function (e) {
+
+        }
+
+        swiper.addEventListener('touchstart',touchstart);
+        swiper.addEventListener('touchmove',touchmove);
+        swiper.addEventListener('touchend',touchend);
+    }*/
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+    <div class="menu-wrap">
+        <div id="bt-line" class="bt-line"></div>
+
+        <ul id="menu-list" class="menu-list">
+            <li>菜单1</li>
+            <li>菜单1</li>
+            <li>菜单1</li>
+            <li>菜单1</li>
+            <li>菜单1</li>
+        </ul>
+    </div>
+</body>
+
+<script>
+    window.onload=function(){
+
+        var oul=document.getElementById('menu-list');
+        var ali=oul.getElementsByTagName('li');
+        var line=document.getElementById('bt-line');
+
+
+        for(var i= 0,len=ali.length;i<len;i++){
+            ali[i].onmouseover=function(){
+                move(line,this.offsetLeft);
+            }
+        }
+
+    }
+    var isSpeed=0;
+
+    function move(obj,target){
+        clearInterval(obj.timer);
+
+        obj.timer=setInterval(function(){
+            /*弹性运动速度*/
+            isSpeed +=(target-obj.offsetLeft)/5;
+            isSpeed =isSpeed * 0.7;
+
+            if(Math.abs(isSpeed)<1 && Math.abs(target-obj.offsetLeft) < 1){
+                clearInterval(obj.timer);
+
+                obj.style.left=target;
+            }else{
+                obj.style.left=obj.offsetLeft + isSpeed + 'px';
+            }
+        },30)
+
+    }
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/public.css"/>
+    <style>
+        #box{width:100px;height:100px;background: red;position: absolute;left:0px;}
+        .line{width:1px;height:300px;display:block;position: absolute;left:500px;background: #000000;}
+    </style>
+</head>
+<body>
+<button id="btn">运动</button>
+<div id="box"></div>
+<span class="line"></span>
+</body>
+<script>
+    window.onload=function (){
+        var box=document.getElementById('box');
+        var btn=document.getElementById('btn');
+
+        btn.onclick= function () {
+            move(500);
+        }
+
+        /*缓冲运动*/
+        /*function move(target){
+         var timer=null;
+
+         timer=setInterval(function(){
+         if(box.offsetLeft == target){
+         clearInterval(timer);
+         }else{
+         var isSpeed=(target - box.offsetLeft)/7;
+         isSpeed=isSpeed > 0 ? Math.ceil(isSpeed) : Math.floor(isSpeed);
+
+         box.style.left=box.offsetLeft + isSpeed + 'px';
+         }
+         },50)
+         }*/
+
+        /*匀速运动*/
+        function move(target){
+            var timer=null;
+
+            var isSpeed=0;
+            if(box.offsetLeft < target){
+                isSpeed=7;
+            }else{
+                isSpeed=-7;
+            }
+
+            timer=setInterval(function(){
+                if(Math.abs(target - box.offsetLeft) < Math.abs(isSpeed)){
+                    clearInterval(timer);
+
+                    box.style.left=target + 'px';
+                }else{
+                    box.style.left=box.offsetLeft + isSpeed + 'px';
+                }
+            },30);
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Calling Angels';
+    src:url('../font/Calling%20Angels%20Personal%20Use.ttf') format('truetype'),
+        url('../font/calling_angels_personal_use-webfont.woff') format('woff');
+    font-weight:normal;
+    font-style: normal;
+
+}
+
+body{
+    font-family: 'Calling Angels';
+}

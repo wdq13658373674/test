@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+<div class="comment-wrap">
+    <ul id="ul" class="comment-list">
+        <li  data-value="self">
+            <div class="top">
+                <span class="img"><img src="../images/flash/1.jpg" alt=""/></span>
+                <span>昵称</span>
+                <span class="close">X</span>
+            </div>
+
+            <div class="container">
+                <div class="content-box">
+                    <div class="con">哈哈哈哈哈哈</div>
+                    <img class="img" src="../images/flash/2.jpg" alt=""/>
+                </div>
+
+                <div class="tool clear">
+                    <a href="#" class="pull-left">分享</a>
+                    <a href="javascript:;" class="thumb" data-flag="true">
+                        赞&nbsp;
+                        <span class="count">0</span>
+                    </a>
+                </div>
+
+                <div class="total"></div>
+
+                <div class="comment"></div>
+
+                <div class="clear">
+                    <textarea class="area" placeholder="评论..."></textarea>
+                    <button class="btn">回复</button>
+                    <p class="pull-right mr20"> <span class="length">0</span>/300</p>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="top">
+                <span class="img"><img src="../images/flash/1.jpg" alt=""/></span>
+                <span>昵称</span>
+                <span class="close">X</span>
+            </div>
+
+            <div class="container">
+                <div class="content-box">
+                    <div class="con">哈哈哈哈哈哈</div>
+                    <img class="img" src="../images/flash/2.jpg" alt=""/>
+                </div>
+
+                <div class="tool clear">
+                    <a href="#" class="pull-left">分享</a>
+                    <a href="javascript:;" class="thumb"  data-flag="true">
+                        赞&nbsp;
+                        <span class="count">4</span>
+                    </a>
+                </div>
+
+                <div class="total">4人点赞</div>
+
+                <div class="comment">
+                    <div class="com-content clear">
+                        <span class="user">其他人：</span>
+                        <span>哈哈哈哈哈</span>
+                        <a href="javascript:;" class="pull-right delete">回复</a>
+                    </div>
+                    <div class="com-content clear">
+                        <span class="user">我：</span>
+                        <span>哈哈哈哈哈</span>
+                        <a href="javascript:;" class="pull-right delete">删除</a>
+                    </div>
+                </div>
+
+                <div class="clear">
+                    <textarea class="area" placeholder="评论..."></textarea>
+                    <div class="clear">
+                        <button class="btn">回复</button>
+                        <p class="pull-right mr20"> <span  class="length">0</span>/300</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+<script>
+    window.onload=function(){
+        var close=document.getElementsByClassName('close')[0];
+        var oli=document.getElementById('ul').getElementsByTagName('li');
+
+        for(var i=0;i<oli.length;i++){
+            /*事件委托*/
+            oli[i].onclick=function(e){
+                var oEvent=e || window.event;
+                var el=oEvent.srcElement || oEvent.target;
+
+                switch (el.className){
+                    /*删除评论*/
+                    case 'close':
+                            del(el.parentNode.parentNode,el);
+                        break;
+                    /*点赞*/
+                    case 'thumb':
+                            var flag=el.getAttribute('data-flag');
+                            thumb(el,flag);
+                        break;
+                    /*发布留言*/
+                    case 'btn':
+                            reply(el);
+                        break;
+                    /*删除回复和操作回复*/
+                    case 'pull-right delete':
+                            if(el.innerText == '删除'){
+                                del(el.parentNode,el);
+                            }else{
+                                answer(el);
+                            }
+                        break;
+                }
+            }
+
+            /*文本框操作*/
+            var oarea=oli[i].getElementsByClassName('area')[0];
+            oarea.onfocus=function(){
+                this.className='area h80';
+            }
+            oarea.onblur=function(){
+                var length=this.parentNode.getElementsByClassName('length')[0];
+                var self=this;
+                if(this.value==''){
+                    self.className='area';
+                    length.innerText=0;
+                }
+            }
+            oarea.onkeyup=function(){
+                var length=this.parentNode.getElementsByClassName('length')[0];
+                length.innerText=this.value.length;
+            }
+        }
+
+
+        /*
+        删除评论
+        */
+        function del(accept,el){
+            accept.remove();
+        }
+
+        /*
+        *点赞
+        * */
+         function thumb(el,flag){
+            var count=el.getElementsByClassName('count')[0];//总赞数
+            var countTxt=parseInt(count.innerText);
+
+            var total=el.parentNode.parentNode.getElementsByClassName('total')[0];
+            var user=el.parentNode.parentNode.parentNode.getAttribute('data-value');/*判断点赞人*/
+
+            if(flag=="true"){
+                el.setAttribute('data-flag','false')
+
+                countTxt++;
+                el.innerHTML='取消赞&nbsp;'+'<span class="count">'+countTxt+'</span>';
+
+                total.innerHTML=countTxt==1 ? '我点赞' : '我和'+(countTxt-1)+'人点赞';
+            }else{
+                el.setAttribute('data-flag','true')
+
+                countTxt--;
+                el.innerHTML='赞&nbsp;'+'<span class="count">'+countTxt+'</span>';
+
+                total.innerHTML=countTxt==0 ? '' : countTxt+'人点赞';
+            }
+        }
+
+        /*
+        发布
+        */
+        function reply(el){
+            var area=el.parentNode.parentNode.getElementsByClassName('area')[0];
+            var length=el.parentNode.getElementsByClassName('length')[0];
+            var comment=el.parentNode.parentNode.parentNode.getElementsByClassName('comment')[0];
+
+            var html=document.createElement('div');
+            html.className='com-content clear';
+            html.innerHTML='<span class="user">我：</span>'+
+            '<span>'+area.value+'</span>'+
+            '<a href="javascript:;" class="pull-right delete">删除</a>';
+
+            if(area.value!=''){
+                comment.appendChild(html);
+            }
+
+            area.value='';
+            area.onblur();
+        }
+
+        /*
+        * 操回复
+        * */
+        function answer(el){
+            var area=el.parentNode.parentNode.parentNode.getElementsByClassName('area')[0];
+            area.onfocus();
+            area.value='我回复其他人m'
+        }
+      }
+</script>
+</html>

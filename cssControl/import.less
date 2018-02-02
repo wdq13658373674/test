@@ -1,0 +1,155 @@
+/*路径定义*/
+@base-url:"..";
+
+/*网站总宽*/
+.main-width{width:1200px;min-width:1200px; margin-left: auto; margin-right: auto}
+
+/*网站主色*/
+@red:#FD5B5F;
+@red-dark:#DC4144;
+@red-light:#ff787b;
+@red-bg:#ffe4e5;
+
+@blue:#58A4E8;
+@blue-dark:#337CBE;
+@blue-light:#77BFFF;
+@blue-bg:#EBF6FF;
+
+@gray:#7F85A3;
+@gray-dark:#4C5374;
+@gray-border:#C3C9D8;
+@gray-border2:#dbe0ed;
+@gray-hover:#DBE0ED;
+@gray-bg:#EFF2F9;
+
+/*字体颜色*/
+@txt-black:#2b314d;
+
+/*提示颜色*/
+@tip-suc:#5CB85C;
+@tip-err:#D9534F;
+
+/*失效颜色*/
+@disabled-bg:#ededed;
+@disabled-border:#d6d6d6;
+@disabled-color:#888888;
+
+/*文字省略*/
+.ellipse{
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+/*样式函数定义*/
+.transition(@min:1s){
+  transition:All @min ease-in-out;
+  -webkit-transition:All @min ease-in-out;
+  -moz-transition:All @min ease-in-out;
+  -o-transition:All @min ease-in-out
+}
+.animation(@fun,@min:1s){
+  animation:@fun @min linear 0s infinite;
+  -webkit-animation:@fun @min linear 0s infinite;
+  -moz-animation:@fun @min linear 0s infinite;
+  -o-animation:@fun @min linear 0s infinite;
+}
+
+/*
+盒子阴影
+@s 右边阴影为正数 左边负数
+@y 下边阴影为正数 上边负数
+@blur  阴影大小
+@color 阴影颜色
+*/
+.box-shadow(@x: 0, @y: 0, @blur: 1px, @color: #ddd) {
+  box-shadow:@x @y @blur @color;
+  -moz-box-shadow:@x @y @blur @color;
+  -webkit-box-shadow:@x @y @blur @color;
+}
+
+.wh(@w:auto,@h:auto,@numb:" "){
+  width: @w;
+  height: @h;
+
+  .line-height(@numb);
+}
+.line-height (@numb) when not (isstring(@numb)){
+  line-height:@numb;
+}
+
+/*
+定义圆角
+@radius 圆角大小
+*/
+.round(@radius:5px){
+  border-radius:@radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+/*
+文字阴影,可以指定多组阴影
+@right_left1 右边阴影为正数 左边负数
+@bottom_top1 下边阴影为正数 上边负数
+<a href="http://my.oschina.net/text" class="referer" target="_blank">@text</a>  阴影大小
+@text_color 阴影颜色
+*/
+.textshadow(@right_left1:2px,@bottom_top1:2px,@blur :2px,@tetx_color:#ddd){
+  text-shadow:@arguments;
+}
+
+/*
+透明度 或渐变 1为不透明 0透明
+css3 rgba(110, 142, 185, .4)!important;前三个是颜色值 后一个是透明值
+用来兼容所有浏览器
+*/
+.rgba(@rgba_a:.4,@rgb_b:40){
+  filter: alpha(opacity=@rgb_b);
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{rgb_b})";
+  opacity:@rgba_a;
+}
+
+/*
+透明背景
+@bg:背景色
+*/
+.bg-rgba(@bg:rgba(43, 48, 77, 0.7)){
+  background-color: @bg;
+  -webkit-background-color: @bg;
+  -moz-background-color: @bg;
+}
+
+/*背景渐变
+@drc:渐变方向
+@start  渐变开始颜色
+@end 结束颜色
+*/
+.linear-gradient(@start:#fff,@end:#eee){
+  background:-webkit-gradient(linear,0 0, 0 100%,from(@start),to(@end));
+  background:-moz-linear-gradient(bottom,@start,@end);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=@start ,endColorstr=@end ,grandientType=0);
+}
+
+/*
+旋转角度
+IE不支持 滤镜支持0，1，2，3
+*/
+.rotate(@ro:360deg){
+  transform: rotate(@ro);
+  -webkit-transform: rotate(@ro);
+  -moz-transform: rotate(@ro);
+  -o-transform: rotate(@ro);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+/*背景图*/
+/*
+@url    图片路径
+@r      是否重复(no-repeat)
+@x      背景定位 x 轴
+@y      背景定位 y 轴
+*/
+.icon(@url,@r,@x:0,@y:0){
+  background: url(@url) @r;
+  background-position: @x @y;
+}

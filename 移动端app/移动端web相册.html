@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/app.css"/>
+
+    <link rel="stylesheet" href="../css/animate.css"/>
+</head>
+<body style="background:#000;">
+<ul class="container clear">
+   <!-- <li><img class="img" src="../images/webApp/1.jpg" alt=""/></li>-->
+</ul>
+
+<div class="big-img" style="display:none;" ontouchmove="$(this).addClass('animated zoomOut');">
+    <!--<img src="../images/webApp/1.large.jpg" alt=""/>-->
+</div>
+</body>
+<script src="../js/zepto.min.js"></script>
+<script>
+    $(function(){
+        var margin=5;
+        var total=17;
+
+        var container=$('.container');
+        var temps='';
+
+        var screenW=$(window).width();
+        var wli=Math.floor((screenW-margin*3)/ 4);
+
+        for(var i=1;i<=total;i++){
+            var imgUrl="../images/webApp/"+i+".jpg";
+           temps+='<li data-value="'+i+'" class="img"><canvas id="img' +i+ '"></canvas>'+'</li>';
+
+            var imgObj=new Image();
+            imgObj.index=i;
+            imgObj.onload=function(){
+                var canvas=$('#img' +  this.index)[0];
+                var context=canvas.getContext('2d');
+
+                canvas.width=wli;
+                canvas.height=wli;
+                context.drawImage(this,0,0);
+            };
+
+            imgObj.src=imgUrl;
+        }
+        container.html(temps);
+        setStyle();
+        /*动态添加样式适配屏幕宽度*/
+        function setStyle(){
+            for(var i=0;i<total;i++){
+                if((i+1)%4 == 0){
+                    margin=0;
+                }else{
+                    margin=5;
+                }
+
+                $('.img').eq(i).css({
+                    'width':wli + 'px',
+                    'height':wli + 'px',
+                    'marginRight':margin + 'px',
+                    'marginBottom':margin + 'px'
+                });
+            }
+        }
+
+        /*LI点击事件*/
+        container.delegate('li','tap',function(){
+            var id=$(this).data('value');
+            loadImg(id,function(img){
+                $(img).addClass('animated bounceInUp');
+            });
+        });
+
+        /*大图交互*/
+        var cid=1;
+        $('.big-img').on('tap',function(){
+            cid++;
+            $(this).show();
+            if(cid > total){
+                cid=0;
+            }else{
+                loadImg(cid,function(img){
+                    $(img).addClass('animated bounceInRight');
+                });
+            }
+        });
+
+        function loadImg(id,callback){
+            var bigImg=$('.big-img');
+            var imgObj=new Image();
+            var url="../images/webApp/"+id+".large.jpg";
+
+            imgObj.onload=function(){
+                var w=this.width;
+                var h=this.height;
+                var screenW=$(window).width();
+                var screenH=$(window).height();
+
+                var realW=screenH*w/h;
+                var realH=screenW*h/w;
+
+                var paddingL=parseInt((screenW-realW)/2);
+                var paddingT=parseInt((screenH-realH)/2);
+
+
+                if(w/h >= 1.1){
+                    $(this).attr('src',url).css({'width':screenW + 'px','padding-Top':paddingT + 'px'});
+                }else{
+                    $(this).attr('src',url).css({'height':screenH + 'px','padding-left':paddingL + 'px'});
+                }
+
+                callback && callback(imgObj);
+            }
+            imgObj.src=url;
+            bigImg.html(imgObj);
+            bigImg.show();
+        }
+    })
+</script>
+</html>

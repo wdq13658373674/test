@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/datePicker.css">
+</head>
+<body>
+<div class="date-container" style="margin:50px;width:280px;">
+    <input type="text" class="date-input" value="" placeholder="请选择日期">
+</div>
+<script src="../js/datePincker.js"></script>
+<script>
+    window.onload=function(){
+        /*设置初始日期*/
+        var satrtDate=[2017,6,28];
+        datePicker.init('.date-input',satrtDate);
+    }
+</script>
+</body>
+</html>

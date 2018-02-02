@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/public.css"/>
+    <style>
+        .table{width:100%;}
+    </style>
+</head>
+<body>
+<button id="btn">排序</button>
+<table class="table" border="1">
+    <thead>
+    <tr>
+        <td>姓名</td>
+        <td>年龄</td>
+        <td>职业</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>20</td>
+        <td>学生</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>25</td>
+        <td>学生</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>22</td>
+        <td>学生</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>23</td>
+        <td>学生</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+<script>
+    window.onload=function(){
+        var oTab=document.getElementsByTagName('table')[0];
+        var btn=document.getElementById('btn');
+        var arr=[];
+        var flag=true;
+
+        btn.onclick=function(){
+            var arr=[];
+            var i=0;
+
+            //1.转成数组
+            for(i=0;i<oTab.tBodies[0].rows.length;i++)
+            {
+                arr[i]=oTab.tBodies[0].rows[i];
+            }
+
+            //2.数组排序
+            arr.sort(function (tr1, tr2){
+                var s=0;
+                if(flag){
+                    s= parseInt(tr1.cells[1].innerHTML)-parseInt(tr2.cells[1].innerHTML);
+                }else{
+                    s= parseInt(tr2.cells[1].innerHTML)-parseInt(tr1.cells[1].innerHTML);
+                }
+
+                return s;
+            });
+
+            //3.重新插入
+            for(i=0;i<arr.length;i++)
+            {
+                oTab.tBodies[0].appendChild(arr[i]);
+            }
+
+            flag=!flag;
+        }
+    }
+</script>
+</html>

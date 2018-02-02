@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+
+    <style>
+        #box{width:100px;height:100px;background: red;position: absolute;}
+        #box2{width:100px;height:100px;background: blue;position: absolute;}
+    </style>
+</head>
+<body>
+<div id="box"></div>
+<div id="box2"></div>
+</body>
+<script>
+    window.onload=function(){
+        /*实例化对象*/
+        var box1=new drag('box');
+        var box2=new limitDrag('box2');
+    }
+
+    /*构造函数*/
+    function drag(id){
+        var self=this;
+
+        this.box=document.getElementById(id);
+        this.disX=0;
+        this.disY=0;
+        this.top=0;
+        this.left=0;
+
+        this.box.onmousedown=function(){
+            self.onmousedown();
+
+            return false;
+        };
+    }
+
+    /*原型链添加方法*/
+    drag.prototype.onmousedown=function(ev){
+        var oEvent=ev || event;
+        var self=this;
+
+        this.box.style.cursor='move';
+
+        this.disX=oEvent.clientX - this.box.offsetLeft;
+        this.disY=oEvent.clientY - this.box.offsetTop;
+
+        document.onmousemove=function(){
+            self.onmousemove();
+        }
+
+        document.onmouseup=function(){
+            self.onmouseup();
+        };
+    }
+
+    drag.prototype.onmousemove=function(ev){
+        var self=this;
+        var oEvent=ev || event;
+        var clienW=document.documentElement.clientWidth;
+        var clienH=document.documentElement.clientHeight;
+
+        this.top=oEvent.clientY - this.disY ;
+        this.left=oEvent.clientX - this.disX;
+
+        this.box.style.top=this.top + 'px';
+        this.box.style.left=this.left + 'px';
+    }
+
+    drag.prototype.onmouseup=function(){
+        document.onmousemove=null;
+        document.onmouseup=null;
+    }
+
+
+    /*使用继承限制拖拽范围*/
+    function limitDrag(id){
+        drag.call(this,id);
+
+    }
+
+    for(i in drag.prototype){
+        limitDrag.prototype[i]=drag.prototype[i];
+    }
+
+    limitDrag.prototype.onmousemove=function(ev){
+        var self=this;
+        var oEvent=ev || event;
+        var clienW=document.documentElement.clientWidth;
+        var clienH=document.documentElement.clientHeight;
+
+        this.top=oEvent.clientY - this.disY ;
+        this.left=oEvent.clientX - this.disX;
+
+        if(this.left < 0){
+            this.left=0;
+        }else if(this.left > clienW - this.box.offsetWidth){
+            this.left=clienW - this.box.offsetWidth;
+        }
+
+        if(this.top < 0){
+            this.top=0;
+        }else if(this.top > clienH -this.box.offsetHeight){
+            this.top=clienH -this.box.offsetHeight;
+        }
+
+        this.box.style.top=this.top + 'px';
+        this.box.style.left=this.left + 'px';
+    }
+</script>
+</html>

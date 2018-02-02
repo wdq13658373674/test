@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+    <script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="input-change">
+    <div class="money-box pull-left">
+        <div class="count clear">
+            <a class="opera down" href="javascript:void(0)">-</a>
+            <div  class="input">
+                <span class="txt gray">¥</span>
+                <input id="rc-money" type="text" value="5000" placeholder="0">
+            </div>
+            <a class="opera up" href="javascript:void(0)">+</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        /*
+         * 加减
+         * */
+        $('#rc-money').blur(function(){
+            var self=$(this);
+            var reg=/^(0|[1-9]\d*)(\.\d{0,2})?$/;//只能输入数字和小数点的正数
+            var val=self.val();
+            if(!reg.test(val)){
+                self.val(0);
+            }
+        })
+
+        $('.count .opera').click(function(){
+            var self=$(this);
+            var input=self.siblings('.input').children('#rc-money');
+
+            var rc_money =parseFloat(input.val()) ;
+
+            if(self.hasClass('down') && rc_money>0){ //--
+                rc_money--;
+            }else  if(self.hasClass('up')){ //++
+                rc_money++;
+            }
+
+            input.val(rc_money);
+        })
+    })
+</script>
+</body>
+</html>

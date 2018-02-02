@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/public.css"/>
+    <style>
+        .box{width:500px;height:500px;border:1px solid #e5e5e5;}
+        .box2{width:100px;height:100px;background:red;}
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="box2"></div>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+<script>
+    $(function(){
+        $('.box').on('click',function(e){
+            if(e.target == e.currentTarget){
+                alert(1);
+            }
+        })
+    })
+</script>
+</html>

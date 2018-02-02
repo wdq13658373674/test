@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+<textarea name="" id="txt" cols="30" rows="10"></textarea>
+<button id="btn">发布</button>
+
+<ul id="comment-list">
+    <li>89999999</li>
+</ul>
+</body>
+<script src="../js/move.js"></script>
+<script>
+    window.onload=function(){
+        var oul=document.getElementById('comment-list');
+        var obtn=document.getElementById('btn');
+        var otxt=document.getElementById('txt');
+        var ali=document.getElementsByTagName('li');
+
+        for(i=0,len=ali.length;i<len;i++){
+            ali[i].style.opacity=1;
+        }
+
+
+        obtn.onclick=function(){
+            var oli=document.createElement('li');
+
+            oli.innerHTML=otxt.value;
+
+            if(ali.length == 0){
+                oul.appendChild(oli);
+            }else{
+                if(otxt.value){
+                    oul.insertBefore(oli,ali[0]);
+                }
+            }
+
+            var h=oli.offsetHeight;
+            oli.style.height=0;
+
+            move(oli,{height:h},function(){
+                move(oli,{opacity:'100'});
+            });
+
+            otxt.value='';
+        }
+    }
+</script>
+</html>

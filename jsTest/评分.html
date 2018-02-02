@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+<ul id="star-list" class="star-list clear">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+</body>
+<script>
+    window.onload=function(){
+        var aLi=document.getElementById('star-list').getElementsByTagName('li');
+        for(var i= 0,len=aLi.length;i<len;i++){
+            aLi[i].index=i;
+            aLi[i].onclick=function(){
+                for(var i=0;i<aLi.length;i++){
+                    if(i <= this.index){
+                        aLi[i].className='active';
+                    }else{
+                        aLi[i].className='';
+                    }
+                }
+            }
+        }
+    }
+</script>
+</html>

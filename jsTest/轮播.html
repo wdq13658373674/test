@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+<div class="flash-wrap">
+    <div id="flash-box" class="flash-box">
+
+        <div class="mask left"></div>
+        <div class="mask right"></div>
+
+        <a href="#" class="btn prev"></a>
+        <a href="#" class="btn next"></a>
+
+        <div id="big-img" class="big-img">
+            <ul class="big-img-list">
+                <li style="z-index: 1;"><img src="../images/flash/1.jpg" alt=""/></li>
+                <li><img src="../images/flash/2.jpg" alt=""/></li>
+                <li><img src="../images/flash/3.jpg" alt=""/></li>
+                <li><img src="../images/flash/4.jpg" alt=""/></li>
+                <li><img src="../images/flash/5.jpg" alt=""/></li>
+                <li><img src="../images/flash/6.jpg" alt=""/></li>
+            </ul>
+            <p id="caption" class="caption">图片说明1</p>
+        </div>
+    </div>
+
+    <div class="small-img">
+        <ul class="small-img-list clear">
+            <li style="opacity: 1;"><img src="../images/flash/1.jpg" alt=""/></li>
+            <li><img src="../images/flash/2.jpg" alt=""/></li>
+            <li><img src="../images/flash/3.jpg" alt=""/></li>
+            <li><img src="../images/flash/4.jpg" alt=""/></li>
+            <li><img src="../images/flash/5.jpg" alt=""/></li>
+            <li><img src="../images/flash/6.jpg" alt=""/></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script src="../js/move.js"></script>
+<script>
+    window.onload=function(){
+        var oflash=document.getElementById('flash-box');
+        var maskPrev=getClass(oflash,'mask left')[0];//遮罩
+        var maskNext=getClass(oflash,'mask right')[0];
+
+        var btnPrev=getClass(oflash,'btn prev')[0];//左右按钮
+        var btnNext=getClass(oflash,'btn next')[0];
+
+        var aSul=document.getElementsByClassName('small-img-list')[0];//缩略图
+        var aSli=aSul.getElementsByTagName('li');
+
+        var obigImg=document.getElementById('big-img');//大图
+        var abul=getClass(obigImg,'big-img-list')[0];
+        var abli=abul.getElementsByTagName('li');
+        var ocap=document.getElementById('caption');
+
+        var isNow=0;
+        var time=null;
+
+        /*标题*/
+        var caption=[
+                '图片说明1',
+                '图片说明2',
+                '图片说明3',
+                '图片说明4',
+                '图片说明5',
+                '图片说明6'
+        ];
+
+        //设置ul的宽度
+        aSul.style.width=aSli.length * aSli[0].offsetWidth + 'px';
+
+        /*自动播放*/
+        time=setInterval(auto,3000);
+
+        /*左右按钮*/
+        btnPrev.onmouseover=maskPrev.onmouseover=function(){
+            clearInterval(time);
+
+            move(btnPrev,{'opacity':100});
+        }
+
+        btnPrev.onmouseout=maskPrev.onmouseout=function(){
+            move(btnPrev,{'opacity':0});
+        }
+
+        btnNext.onmouseover=maskNext.onmouseover=function(){
+            clearInterval(time);
+
+            move(btnNext,{'opacity':100});
+        }
+
+        btnNext.onmouseout=maskNext.onmouseout=function(){
+            move(btnNext,{'opacity':0});
+        }
+
+        /*缩略图点击大图显示*/
+        for(var i= 0,len=aSli.length;i<len;i++){
+            aSli[i].index=i;
+
+            aSli[i].onmouseover=function(){
+                move(this,{'opacity':100});
+
+                clearInterval(time);
+            }
+
+            aSli[i].onmouseout=function(){
+                if(this.index != isNow){
+                    move(this,{'opacity':40});
+                }
+//                setInterval(auto,3000);
+            }
+
+            aSli[i].onclick=function(){
+                if(this.index == isNow) return;
+                isNow=this.index;
+
+                tab();
+            }
+        }
+
+        /*左右按钮点击*/
+        btnPrev.onclick=function(){
+            isNow--;
+
+            if(isNow == -1){
+                isNow=aSli.length-1;
+            }
+
+            tab();
+        }
+        btnNext.onclick=function(){
+            isNow++;
+
+            if(isNow == aSli.length){
+                isNow=0;
+            }
+
+            tab();
+        }
+
+        /*缩略图点击大图显示*/
+        function tab(){
+            for(var i= 0,len=aSli.length;i<len;i++){
+                move(aSli[i],{'opacity':40});
+                abli[i].style.zIndex=1;
+            }
+
+            ocap.innerHTML=caption[isNow];
+            move(aSli[isNow],{'opacity':100});
+            abli[isNow].style.zIndex=2;
+            abli[isNow].style.height=0;
+            move(abli[isNow],{'height':obigImg.offsetHeight});
+
+            /*移动*/
+            var l=0;
+            if(isNow != 0){
+                l=-(isNow-1) * aSli[0].offsetWidth;
+            }
+            if(isNow == (aSli.length -1)){
+                l=-(isNow-2) * aSli[0].offsetWidth;
+            }
+            move(aSul,{'left':l});
+        }
+
+        /*自动播放*/
+        function auto(){
+            isNow++;
+            if(isNow == aSli.length){
+                isNow=0;
+            }
+            tab();
+        }
+    }
+
+    /*获取dom对象*/
+    function getClass(oparent,name){
+        var oElement=oparent.getElementsByTagName('*');
+        var aResult=[];
+
+        for(var i= 0,len=oElement.length;i<len;i++){
+            if(oElement[i].className == name){
+                aResult.push(oElement[i]);
+            }
+        }
+
+        return aResult;
+    }
+</script>
+</html>

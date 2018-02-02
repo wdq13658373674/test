@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+    <div class="menu-box">
+        <a id="menu" href="#">全部菜单</a>
+        <ul id="menu-list" class="menu-list">
+            <li>
+                <a class="nav" href="#">菜单一</a>
+                <div class="menu-child">
+                    <p>
+                        <a href="#">类别一</a>
+                        <a href="#">类别一</a>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <a class="nav" href="#">菜单一</a>
+                <div class="menu-child">
+                    <p>
+                        <a href="#">类别一</a>
+                        <a href="#">类别一</a>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <a class="nav" href="#">菜单一</a>
+                <div class="menu-child">
+                    <p>
+                        <a href="#">类别一</a>
+                        <a href="#">类别一</a>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    'use strict';
+    window.onload=function(){
+        var oMenu=document.getElementById('menu');
+        var oMenuList=document.getElementById('menu-list');
+        var aLi=oMenuList.getElementsByTagName('li');
+
+        var aNav=document.getElementsByClassName('nav');
+        var aMenuChild=document.getElementsByClassName('menu-child');
+
+        oMenu.onclick=function(){
+            if(oMenuList.style.display=='block'){
+                oMenuList.style.display='none';
+            }else{
+                oMenuList.style.display='block';
+            }
+        }
+
+        for(var i= 0,len=aLi.length;i<len;i++){
+            aLi[i].index=i;
+            aLi[i].onmouseover=function(){
+                /*aNav[this.index].style.zIndex='30';
+                aNav[this.index].style.position='absolute';*/
+
+                aNav[this.index].className='nav active';
+                aMenuChild[this.index].style.display='block';
+            }
+
+            aLi[i].onmouseout=function(){
+                /*aNav[this.index].style.zIndex='0';
+                aNav[this.index].style.position='relative';*/
+
+                /*aMenuChild[this.index].style.display='none';*/
+
+
+                aNav[this.index].className='nav';
+                aMenuChild[this.index].style.display='none';
+            }
+        }
+    }
+</script>
+</html>

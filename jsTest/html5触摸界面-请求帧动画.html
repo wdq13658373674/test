@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <style>
+        #box{width:100px;height:100px;background:red;position:absolute;top:0;left:0;}
+    </style>
+</head>
+<body>
+<div id="box"></div>
+<script>
+    /**
+     * 创建一个跨浏览器（'webkit','moz','ms'）的请求帧方法
+     * */
+    var requestFrame = (function(){
+        var thisFun
+            ,prefixList = ['webkit','moz','ms'];
+
+        for(var i=0,len=prefixList.length;i<len;i++){
+            thisFun = prefixList[i] + 'RequestAnimationFrame';
+
+            if(window[thisFun]){
+                return function(callback){
+                    window[thisFun](callback);
+                }
+            }
+        }
+
+        return function(callback){
+            window.setTimeout(callback,67);
+        }
+    })()
+
+    window.onload=function(){
+        var box = document.getElementById('box');
+
+        /**
+         * 使用请求帧实现动画（确保动画以恒定的速度移动）
+         * */
+        function animate(ele,from,to,duration,callback){
+            var perPx = Math.abs(from - to) / duration;
+            var pos = from;
+            var time = Date.now();
+
+            var fun = function(){
+                var last,differ,movePx;
+
+                last = time;
+                time = Date.now();
+                differ = time - last;
+
+                movePx = Math.ceil(differ * perPx);
+
+                pos = pos + movePx;
+
+                ele.style.left = pos + 'px';
+
+                if(pos < to){
+                    requestFrame(fun);
+                }else {
+                    callback();
+                }
+
+            }
+
+            fun();
+        }
+
+        animate(box,0,500,1000,function(){
+            console.log('结束');
+        })
+    }
+</script>
+</body>
+</html>

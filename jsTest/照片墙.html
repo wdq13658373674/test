@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+
+    <style>
+        #ul1{width:660px;margin: 20px auto;position: relative;}
+        #ul1 li{width:200px;height:100px;line-height:100px;margin:10px;float:left;overflow: hidden;z-index:1;}
+        #ul1 li.active{border:1px dashed red;}
+        #ul1 li img{width:100%;height:auto;}
+    </style>
+</head>
+<body>
+<ul id="ul1">
+    <li><img src="../images/flash/1.jpg" alt=""/></li>
+    <li><img src="../images/flash/2.jpg" alt=""/></li>
+    <li><img src="../images/flash/3.jpg" alt=""/></li>
+    <li><img src="../images/flash/4.jpg" alt=""/></li>
+    <li><img src="../images/flash/5.jpg" alt=""/></li>
+    <li><img src="../images/flash/1.jpg" alt=""/></li>
+    <li><img src="../images/flash/2.jpg" alt=""/></li>
+    <li><img src="../images/flash/3.jpg" alt=""/></li>
+    <li><img src="../images/flash/4.jpg" alt=""/></li>
+    <li><img src="../images/flash/5.jpg" alt=""/></li>
+</ul>
+</body>
+<script src="../js/move.js"></script>
+<script>
+    window.onload=function(){
+        var oul=document.getElementById('ul1');
+        var ali=oul.getElementsByTagName('li');
+
+        var top=0;
+        var left=0;
+        var disX=0;
+        var disY=0;
+        var minzindex=2;
+
+        var posi=[];
+
+        /*布局转换绝对定位*/
+        for(var i=0;i<ali.length;i++){
+            posi[i]={left:ali[i].offsetLeft,top:ali[i].offsetTop};
+        }
+        for(var i=0;i<ali.length;i++){
+            ali[i].style.top=posi[i].top + 'px';
+            ali[i].style.left=posi[i].left + 'px';
+            ali[i].style.position='absolute';
+
+            ali[i].index=i;//添加index属性
+        }
+
+        /*拖拽*/
+        for(var i=0;i<ali.length;i++){
+            drag(ali[i]);
+        }
+
+        /*拖拽*/
+        function drag(obj){
+            obj.onmousedown=function(e){
+                var oEvent=e || window.event;
+
+                obj.style.zIndex=minzindex++ ;
+                obj.style.cursor='move';
+
+                disX=oEvent.clientX - obj.offsetLeft;
+                disY=oEvent.clientY - obj.offsetTop;
+
+                document.onmousemove=function(e){
+                    var oEvent=e || window.event;
+
+                    top=oEvent.clientY - disY ;
+                    left=oEvent.clientX - disX;
+
+                    obj.style.top = top + 'px';
+                    obj.style.left = left + 'px';
+
+                    for(var i=0;i<ali.length;i++){
+                        ali[i].className='';
+                    }
+
+                    /*给碰撞最近的添加样式active*/
+                    var s=min(obj);
+                    if(s){
+                        s.className='active';
+                    }
+                }
+
+                document.onmouseup=function(){
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+
+                    /*交换位置*/
+                    var s=min(obj);
+                    if(s){
+                        s.className='';
+
+                        s.style.zIndex=minzindex++;
+                        obj.style.zIndex=minzindex++;
+
+                        move(s,posi[obj.index]);
+                        move(obj,posi[s.index]);
+
+                        /*交换index*/
+                        var tmp=0;
+
+                        tmp=obj.index;
+                        obj.index=s.index;
+                        s.index=tmp;
+                    }else {
+                        move(obj,posi[obj.index]);
+                    }
+                }
+
+                return false;/*坑1*/
+            }
+
+        }
+
+        /*检测碰撞*/
+        function drop(obj1,obj2){
+            var t1=obj1.offsetTop + obj1.offsetHeight;
+            var l1=obj1.offsetLeft + obj1.offsetWidth;
+
+            var t2=obj2.offsetTop + obj2.offsetHeight;
+            var l2=obj2.offsetLeft + obj2.offsetWidth;
+
+            if(l1 < obj2.offsetLeft || obj1.offsetLeft > l2 || t1<obj2.offsetTop || obj1.offsetTop>t2){
+                return false;
+            }else{
+                return true;
+            }
+
+        }
+
+        /*计算距离*/
+        function dis(obj1,obj2){
+            var a=obj1.offsetLeft - obj2.offsetLeft;
+            var b=obj1.offsetTop - obj2.offsetTop;
+            return Math.sqrt(a*a + b*b);
+        }
+
+        /*检测碰撞最近的*/
+        function min(obj){
+            var imin=999999999;
+
+            for(var i=0;i<ali.length;i++){
+                if(obj==ali[i]) continue;
+
+                if(drop(obj,ali[i])){
+                    var distance=dis(obj,ali[i]);
+                    if(imin>distance){
+                        imin=distance;
+
+                        var iminIndex=i;
+                    }
+                }
+            }
+
+            if(iminIndex == -1){
+                return null;
+            }else{
+                return ali[iminIndex];//坑2
+            }
+        }
+    }
+</script>
+</html>

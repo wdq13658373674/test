@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/public.css"/>
+</head>
+
+<body>
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+<script>
+    $(function(){
+        var data={
+            0:{
+                type:'2017-11-5'
+            },
+            1:{
+                type:'2017-12-4'
+            },
+            2:{
+                type:'2017-09-5'
+            },
+            3:{
+                type:'2016-11-5'
+            }
+
+        }
+
+        /**
+         * 遍历最大值
+         * */
+        var date=0;
+        var max=0;
+        $.each(data,function(index,value){
+            var d=DateToUnix(value.type);
+            if(date < d){
+                date=d;
+                max=value.type;
+            }
+        })
+        console.log(date,max);
+    })
+
+    /**
+     * 日期 转换为 Unix时间戳
+     * @param <string> 2014-01-01 20:20:20  日期格式
+     * @return <int>        unix时间戳(秒)
+     */
+    function DateToUnix(string) {
+        var f = string.split(' ', 2);
+        var d = (f[0] ? f[0] : '').split('-', 3);
+        var t = (f[1] ? f[1] : '').split(':', 3);
+        return (new Date(
+                parseInt(d[0], 10) || null,
+                (parseInt(d[1], 10) || 1) - 1,
+                parseInt(d[2], 10) || null,
+                parseInt(t[0], 10) || null,
+                parseInt(t[1], 10) || null,
+                parseInt(t[2], 10) || null
+            )).getTime() / 1000;
+
+        console.log(d,t);
+    }
+
+    DateToUnix('2016-11-5')
+</script>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <style>
+        #wrap{width:640px;margin:50px auto;}
+        img{vertical-align: middle;}
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <img src="../images/full/miaov%20(0).jpg" alt=""/>
+</div>
+</body>
+<script>
+    window.onload=function() {
+        var wrap=document.getElementById('wrap');
+        var imgs=wrap.getElementsByTagName('img');
+        var lastImg=imgs[0];
+        var isSpeed=0;
+        var lastX=0;
+        var timer=0;
+        var x=0;
+        var i=0;
+
+        //处理性能
+        for(i=0;i<77;i++){
+            /*？？？？ */
+            (function(newImg){
+                //处理图片加载
+                var oImg=new Image();
+                oImg.onload=function(){
+                    newImg.src=this.src;
+                }
+
+                oImg.src="../images/full/miaov%20("+i+").jpg";
+                newImg.style.display='none';
+
+                wrap.appendChild(newImg);
+
+            })(document.createElement('img'));
+        }
+
+        document.onmousedown=function(e){
+            var oEvent=e || window.event;
+            var disX=oEvent.clientX -x;
+
+            if(timer){
+                clearInterval(timer);
+            }
+
+            document.onmousemove=function(e){
+                var oEvent=e || window.event;
+                x=oEvent.clientX - disX;//横坐标点
+
+                move();
+
+                isSpeed=x-lastX;
+                lastX=x;
+
+                return false;
+            }
+
+            document.onmouseup=function(){
+                document.onmousemove=null;
+                document.onmouseup=null;
+
+                /*缓冲停下*/
+                timer=setInterval(function (){
+                    x+=isSpeed;
+                    move();
+                }, 30);
+            }
+
+            return false;
+        }
+
+        //旋转
+        function move(){
+            /*速度处理*/
+            if(isSpeed < 0){
+                isSpeed++;
+            }else{
+                isSpeed--;
+            }
+            if(isSpeed==0){
+                clearInterval(timer);
+            }
+
+            /*方向处理*/
+            var l=parseInt(-x/10);/*鼠标移动10再改变图片*/
+            if(l>0)
+            {
+                l=l%77;
+            }
+            else
+            {
+                l+=-Math.floor(l/77)*77;
+            }
+
+            /*更换图片*/
+            if(lastImg != imgs[l]){
+                lastImg.style.display='none';
+                imgs[l].style.display='block';
+
+                lastImg=imgs[l];
+            }
+        } 
+    }
+</script>
+</html>

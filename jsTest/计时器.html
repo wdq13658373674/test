@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+    <div class="time-box clear">
+        <img src="../images/time/0.png" alt=""/>
+        <img src="../images/time/0.png" alt=""/>
+        <span class="txt">时</span>
+        <img src="../images/time/0.png" alt=""/>
+        <img src="../images/time/0.png" alt=""/>
+        <span class="txt">分</span>
+        <img src="../images/time/0.png" alt=""/>
+        <img src="../images/time/0.png" alt=""/>
+        <span class="txt">秒</span>
+    </div>
+</body>
+<script>
+    window.onload=function(){
+        getTime();
+        var timer=setInterval(getTime,1000);
+    }
+
+    /*给小于10的数字添加0*/
+    function toNum(num){
+        if(num < 10){
+            return '0' + num;
+        }else{
+            return '' + num;
+        }
+    }
+
+    function getTime(){
+        var time=new Date();
+        var str='';
+        str=toNum(time.getHours()) + toNum(time.getMinutes()) + toNum(time.getSeconds());
+        var img=document.getElementsByTagName('img');
+
+        for(var i= 0,len=img.length;i<len;i++){
+            img[i].src="../images/time/"+ str.charAt(i) +".png";
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <style>
+        .slide{overflow:hidden;}
+        .slide .imgbox{text-align: center;margin-top:10px;}
+        .slide .imgbox{text-align: center;}
+    </style>
+</head>
+<body>
+<div class="slide">
+    <!--<div class="imgbox">
+        <a href="#">
+            <img data-src="../images/flash/1.jpg" src="" alt="">
+        </a>
+    </div>
+
+    <div class="imgbox">
+        <a href="#">
+            <img data-src="../images/flash/2.jpg" src="" alt="">
+        </a>
+    </div>
+
+    <div class="imgbox">
+        <a href="#">
+            <img data-src="../images/flash/3.jpg" src="" alt="">
+        </a>
+    </div>
+
+    <div class="imgbox">
+        <a href="#">
+            <img data-src="../images/flash/4.jpg" src="" alt="">
+        </a>
+    </div>-->
+</div>
+<script>
+    window.onload=function(){
+        /**json数据**/
+        var data = {
+            0: {
+                "url": "../images/flash/1.jpg",
+                "title": "1"
+            },
+            1:{
+                "url": "../images/flash/2.jpg",
+                "title": "2"
+            },
+            2: {
+                "url": "../images/flash/3.jpg",
+                "title": "3"
+            },
+            3: {
+                "url": "../images/flash/4.jpg",
+                "title": "4"
+            },
+            4: {
+                "url": "../images/flash/1.jpg",
+                "title": "1"
+            },
+            5:{
+                "url": "../images/flash/2.jpg",
+                "title": "2"
+            },
+            6: {
+                "url": "../images/flash/3.jpg",
+                "title": "3"
+            },
+            7: {
+                "url": "../images/flash/4.jpg",
+                "title": "4"
+            },
+            8: {
+                "url": "../images/flash/1.jpg",
+                "title": "1"
+            },
+            9:{
+                "url": "../images/flash/2.jpg",
+                "title": "2"
+            },
+            10: {
+                "url": "../images/flash/3.jpg",
+                "title": "3"
+            },
+            11: {
+                "url": "../images/flash/4.jpg",
+                "title": "4"
+            }
+        };
+        var obj = JSON.parse(JSON.stringify(data));
+
+        init(obj);
+        handleDefer();
+
+        /**滚动加载图片**/
+        document.onscroll=function(){
+            setTimeout(function(){
+                handleDefer();
+            },1000)
+        }
+
+        /**
+         * 判断图片是否在可视区域
+         * */
+        function isVisible(node) {
+            var scrollTop = document.documentElement.scrollTop//滚动距离
+                ,offTop = node.offsetTop //文档偏移高度
+                ,offsetHeight = node.offsetHeight//文档高度
+                ,innerHeight = window.innerHeight//可视高度
+                ,bottomViewPort = scrollTop + innerHeight;//滚动到底部的高度
+
+            return offTop + offsetHeight > scrollTop && offTop < bottomViewPort;
+        }
+
+        /**
+         * 替换img的src
+         * */
+        function handleDefer(){
+            var list = document.querySelectorAll('.imgbox');
+
+
+            for(var i=0,len = list.length;i<len;i++){
+                var imgs = list[i].querySelector('.img');
+
+                /*if(imgs.src){
+                    continue;
+                }*/
+
+                if(isVisible(list[i])){
+                    var url = imgs.getAttribute('data-src');
+                    if(url){
+                        imgs.src = url;
+                        imgs.removeAttribute('data-src');
+                    }
+                }
+            }
+        }
+
+        /**
+         * 创建初始化dom
+         * */
+        function init(data){
+            var len = getJsonLength(data);
+            var slide = document.getElementsByClassName('slide')[0];
+            var html="";
+
+            for(var i=0;i<len;i++){
+                html+='<div class="imgbox">'+
+                    '<a href="#">'+
+                    '<img class="img" data-src="'+data[i].url+'" src="../images/flash/loading.gif" alt="">'+
+                    '</a>'+
+                    '</div>';
+            }
+
+            slide.innerHTML = html;
+        }
+
+        /**
+         * 获取json长度
+         * */
+        function getJsonLength(json){
+            var jsonLength=0;
+            for (var i in json) {
+                jsonLength++;
+            }
+            return jsonLength;
+        }
+    }
+</script>
+</body>
+</html>

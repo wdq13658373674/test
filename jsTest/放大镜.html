@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+<!--放大前-->
+<div id="img-box">
+    <img id="img1" src="../images/full/miaov (69).jpg" alt=""/>
+
+    <div id="zoom"></div>
+</div>
+<!--放大后-->
+<div id="zoom-box">
+    <img id="img2" src="../images/full/miaov (69).jpg" alt=""/>
+</div>
+</body>
+
+<script>
+    window.onload=function(){
+        var oDiv1=document.getElementById('img-box');
+        var oDiv2=document.getElementById('zoom-box');
+
+        var oZoom=document.getElementById('zoom');
+
+        var img1=document.getElementById('img1');
+        var img2=document.getElementById('img2');
+
+        var left=0;
+        var top=0;
+        var scaleW=0;
+        var scaleH=0;
+
+        oDiv1.onmousemove=function(e){
+            var oEvent=e || window.event;
+
+            this.style.cursor='move';
+
+            /*计算放大比列*/
+            oDiv2.style.display='block';
+            scaleW=oDiv2.offsetWidth / oZoom.offsetWidth;
+            scaleH=oDiv2.offsetHeight / oZoom.offsetHeight;
+            img2.style.width=scaleW * img1.offsetWidth + 'px';
+            img2.style.height=scaleH * img1.offsetHeight + 'px';
+
+            left=oEvent.clientX - oDiv1.offsetLeft - oZoom.offsetWidth/2;
+            top=oEvent.clientY- oDiv1.offsetTop - oZoom.offsetHeight/2;
+
+            if(left <= 0){
+                left=0;
+            }
+
+            if(left >= oDiv1.offsetWidth - oZoom.offsetWidth){
+                left=oDiv1.offsetWidth - oZoom.offsetWidth;
+            }
+
+            if(top <= 0){
+                top=0;
+            }
+
+            if(top >= oDiv1.offsetHeight - oZoom.offsetHeight){
+                top=oDiv1.offsetHeight - oZoom.offsetHeight;
+            }
+
+            oZoom.style.left=left + 'px';
+            oZoom.style.top=top + 'px';
+
+            /*大图定位*/
+            img2.style.left=-(left * scaleW) + 'px';
+            img2.style.top=-(top * scaleH) + 'px';
+
+            return false;
+        }
+
+        oDiv1.onmouseout=function(){
+            oDiv2.style.display='none';
+        }
+
+    }
+</script>
+</html>

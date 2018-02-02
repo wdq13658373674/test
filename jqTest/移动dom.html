@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/public.css"/>
+</head>
+
+<body>
+<button class="btn">添加</button>
+<div class="content" style="color:red;">
+
+</div>
+
+<div class="box">
+    <div class="text">哈哈哈哈哈哈哈哈</div>
+    <div class="text">11111</div>
+</div>
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+<script>
+    $(function(){
+        /**
+         * 方式一
+         * */
+        /*var html='';
+        $('.btn').click(function () {
+            var self=$(this);
+            var content=$('.content');
+            var box=$('.box');
+
+            if(box.length > 0){
+                html=box.html();
+                box.remove();
+            }
+
+            self.toggleClass('show');
+
+            if(self.hasClass('show')){
+                content.append(html);
+            }else {
+                content.children('.text').remove();
+            }
+        })*/
+
+        /**
+         * 方式二
+         * */
+        var box=$('.box');
+        $('.btn').click(function(){
+            var self=$(this);
+            var content=$('.content');
+
+            self.toggleClass('show');
+            if(self.hasClass('show')){
+                if(box.length > 0){
+                    content.append(box);
+                }
+            }else {
+                content.children('.box').remove();
+            }
+        })
+    })
+</script>
+</html>

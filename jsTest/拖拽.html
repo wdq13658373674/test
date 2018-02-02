@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+
+    <style>
+        #box{width:100px;height:100px;background: red;position: absolute;}
+        #box2{width:100px;height:100px;background: blue;position: absolute;top:50%;margin-top:-50px;left:50%;margin-left:-50px;}
+    </style>
+</head>
+<body>
+<!--<div id="box2"></div>-->
+<div id="box"></div>
+
+</body>
+<script>
+    window.onload=function(){
+        var box=document.getElementById('box');
+
+
+        var cookie=getCookie('x');
+        if(cookie){
+            box.style.top=getCookie('y') + 'px';
+            box.style.left=getCookie('x') + 'px';
+        }
+
+        box.onmousedown=function(ev){
+            var disX=0;
+            var disY=0;
+            var top=0;
+            var left=0;
+
+            var oEvent=ev || event;
+
+            this.style.cursor='move';
+
+            disX=oEvent.clientX - box.offsetLeft;
+            disY=oEvent.clientY - box.offsetTop;
+
+            document.onmousemove=function(ev){
+                var oEvent=ev || event;
+                var clienW=document.documentElement.clientWidth;
+                var clienH=document.documentElement.clientHeight;
+
+                top=oEvent.clientY - disY ;
+                left=oEvent.clientX - disX;
+
+                /*
+                * 50表示吸附
+                * */
+                if(left < 50){
+                    left=0;
+                }else if(left > clienW - box.offsetWidth -50){
+                    left=clienW - box.offsetWidth;
+                }
+
+                if(top < 50){
+                    top=0;
+                }else if(top > clienH -box.offsetHeight - 50){
+                    top=clienH -box.offsetHeight;
+                }
+
+                box.style.top=top + 'px';
+                box.style.left=left + 'px';
+
+                /*碰撞*/
+                /*var box2=document.getElementById('box2');
+                var r=left + box.offsetWidth;
+                var b=top + box.offsetHeight;
+
+                var r2=box2.offsetLeft + box.offsetWidth;
+                var left2=box2.offsetLeft;
+                var t2=box2.offsetTop + box.offsetHeight;
+                var top2=box2.offsetTop;
+
+                if(r<left2 || left > r2 || b < top2 ||  top > t2){
+                    box2.style.background='blue';
+                }else{
+                    box2.style.background='yellow';
+                }*/
+            }
+
+            document.onmouseup=function(){
+                document.onmousemove=null;
+                document.onmouseup=null;
+
+                /*保存最终坐标*/
+                setCookie('x',left,30);
+                setCookie('y',top,30);
+            }
+        }
+    }
+
+    /*设置cookie*/
+    function setCookie(name,value,date){
+        var time=new Date();
+        time.setDate(time.getDate() + date);
+
+        document.cookie=name + '=' + value + ';expires=' + time;
+    }
+
+    /*获取cookie*/
+    function getCookie(name){
+        var arr=document.cookie.split('; ');
+        for(var i= 0,len=arr.length;i<len;i++){
+            var arr2=arr[i].split('=');
+            if(arr2[0] == name){
+                return arr2[1];
+            }
+        }
+
+        return '';
+    }
+
+    /*删除cookie*/
+    function removeCookie(name){
+        setCookie(name,'1',-1);
+    }
+</script>
+</html>

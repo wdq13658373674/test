@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+
+</head>
+<body>
+<div id="time-wrap">
+    <span class="d">12</span>
+    <span>天</span>
+    <span class="h">12</span>
+    <span>时</span>
+    <span class="m">60</span>
+    <span>分</span>
+    <span class="s">10</span>
+    <span>妙</span>
+</div>
+</body>
+<script src="../js/miaov.js"></script>
+<script>
+    window.onload=function(){
+        var odiv=document.getElementById('time-wrap');
+        var d=odiv.getElementsByClassName('d')[0];
+        var h=odiv.getElementsByClassName('h')[0];
+        var m=odiv.getElementsByClassName('m')[0];
+        var s=odiv.getElementsByClassName('s')[0];
+        var timer=null;
+        var count=0;
+        var end='2017-09-05'
+
+        function addZero(num,size){
+            var str=''+num;
+
+            if(str.length <size){
+                str='0' + str;
+            }
+
+            return str;
+        }
+
+        /*2015-12-31 09:59*/
+        function update(time){
+            var timeEnd=new Date();
+            var timeNow=new Date();
+
+            var day=0;
+            var hour=0;
+            var minute=0;
+            var second=0;
+
+            timeEnd.setFullYear(parseInt(time.slice(0,4)));//年
+            timeEnd.setMonth(parseInt(time.slice(5,7)) - 1);//月
+            timeEnd.setDate(parseInt(time.slice(8,10)));//日
+            timeEnd.setHours(17);//时
+            timeEnd.setMinutes(20);//分
+            timeEnd.setSeconds(0);//秒
+
+            count=(timeEnd.getTime() - timeNow.getTime()) / 1000;
+            if(count <=0){
+                /*置零*/
+                clearInterval(timer);
+                count=0;
+
+                console.log('时间已经结束');
+            }
+
+            /*换算*/
+            day=parseInt(count/86400);
+            count%=86400;
+
+            hour=parseInt(count/3600);
+            count%=3600;
+
+            minute=parseInt(count/60);
+            count%=60;
+
+            second=count;
+
+            /*赋值*/
+            d.innerHTML=addZero(day,2);
+            h.innerHTML=addZero(hour,2);
+            m.innerHTML=addZero(minute,2);
+            s.innerHTML=addZero(second,2);
+        }
+
+        update(end);
+        timer=setInterval(function(){
+            update(end);
+        },1000);
+    }
+</script>
+</html>

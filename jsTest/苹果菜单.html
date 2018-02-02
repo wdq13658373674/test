@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+
+</head>
+<body>
+<div class="box">
+    <ul id="menu-list">
+        <li><img src="../images/apple/1.jpg" alt=""/></li>
+        <li><img src="../images/apple/2.jpg" alt=""/></li>
+        <li><img src="../images/apple/3.jpg" alt=""/></li>
+        <li><img src="../images/apple/4.jpg" alt=""/></li>
+        <li><img src="../images/apple/5.jpg" alt=""/></li>
+        <li><img src="../images/apple/6.jpg" alt=""/></li>
+        <li><img src="../images/apple/7.jpg" alt=""/></li>
+        <li><img src="../images/apple/8.jpg" alt=""/></li>
+        <li><img src="../images/apple/9.jpg" alt=""/></li>
+        <li><img src="../images/apple/10.jpg" alt=""/></li>
+        <li><img src="../images/apple/11.jpg" alt=""/></li>
+        <li><img src="../images/apple/12.jpg" alt=""/></li>
+    </ul>
+</div>
+<div id="apple-menu">
+    <i class="icon"></i>
+    <span>menu1</span>
+    <span>menu2</span>
+</div>
+</body>
+<script src="../js/miaov.js"></script>
+<script>
+    window.onload=function(){
+        var box=document.getElementsByClassName('box')[0];
+        var oul=document.getElementById('menu-list');
+        var ali=oul.getElementsByTagName('li');
+        var menu=document.getElementById('apple-menu').getElementsByTagName('span');
+        var trangle=document.getElementsByClassName('icon')[0];
+        var i=0;
+        var moveLeft=0;
+        var posi=[];
+        var timer=null;
+        var w=box.offsetWidth + ali[0].offsetWidth;
+
+        /*转换定位*/
+        for(i=0;i<ali.length;i++){
+            ali[i].style.top=ali[i].offsetTop + 'px';
+            posi[i]=ali[i].offsetLeft;
+        }
+
+        for(i=0;i<ali.length;i++){
+            ali[i].style.position='absolute';
+            ali[i].style.left=posi[i] +'px';
+        }
+
+        /*三角形定位*/
+        trangle.style.left = menu[0].offsetLeft + menu[0].offsetWidth/2 - trangle.offsetWidth/2 + 'px';
+       /*menu点击事件*/
+        menu[0].onclick=function ()
+        {
+            i=ali.length-1;
+
+            if(timer){
+                clearTimeout(timer);
+            }
+
+            function next()
+            {
+                if(i>=ali.length/2)
+                {
+                    miaovStartMove(ali[i], {left: w}, MIAOV_MOVE_TYPE.FLEX);
+                    timer=setTimeout(next, 100);
+                    i--;
+                }
+                else
+                {
+                    timer=setTimeout(next2, 100);
+                }
+            }
+
+            function next2()
+            {
+                if(i>=0)
+                {
+                    miaovStartMove(ali[i], {left: posi[i]}, MIAOV_MOVE_TYPE.FLEX);
+                    timer=setTimeout(next2, 100);
+                }
+                i--;
+            }
+
+            next();
+
+            /*三角*/
+            moveLeft=this.offsetLeft + this.offsetWidth/2 - trangle.offsetWidth/2;
+            miaovStartMove(trangle, {left:moveLeft}, MIAOV_MOVE_TYPE.BUFFER) ;
+        };
+
+        menu[1].onclick=function(){
+            var i=0;
+
+            clearTimeout(timer);
+
+            function next()
+            {
+                if(i<ali.length/2)
+                {
+                    miaovStartMove(ali[i], {left: -w}, MIAOV_MOVE_TYPE.FLEX);
+                    timer=setTimeout(next, 100);
+                    i++;
+                }
+                else if(i==ali.length/2)
+                {
+                    timer=setTimeout(next2, 100);
+                }
+            }
+
+            function next2(){
+                timer=setInterval(function(){
+                    miaovStartMove(ali[i],{left:posi[i-ali.length/2]}, MIAOV_MOVE_TYPE.FLEX) ;
+                    i++;
+
+                    if(i>=ali.length){
+                        clearInterval(timer);
+                    }
+                },100);
+            }
+            next();
+
+            /*三角*/
+            moveLeft=this.offsetLeft + this.offsetWidth/2 - trangle.offsetWidth/2;
+            miaovStartMove(trangle, {left:moveLeft}, MIAOV_MOVE_TYPE.BUFFER) ;
+        }
+    }
+</script>
+</html>

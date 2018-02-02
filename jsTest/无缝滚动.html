@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+</head>
+<body>
+
+<div class="slide-wrap">
+    <a class="btn prev" href="#">prev</a>
+    <div class="slide-box">
+        <ul id="slide-img" class="slide-img clear">
+            <li><img src="../images/slide/1.jpg" alt=""/></li>
+            <li><img src="../images/slide/2.jpg" alt=""/></li>
+            <li><img src="../images/slide/3.jpg" alt=""/></li>
+            <li><img src="../images/slide/4.jpg" alt=""/></li>
+
+            <li><img src="../images/slide/1.jpg" alt=""/></li>
+            <li><img src="../images/slide/2.jpg" alt=""/></li>
+            <li><img src="../images/slide/3.jpg" alt=""/></li>
+            <li><img src="../images/slide/4.jpg" alt=""/></li>
+        </ul>
+    </div>
+    <a class="btn next" href="#">next</a>
+</div>
+</body>
+<script>
+    window.onload=function(){
+        var oul=document.getElementById('slide-img');
+        var ali=oul.getElementsByTagName('li');
+        var abtn=document.getElementsByClassName('btn');
+
+        var isSpeed=-10;
+
+        var w=ali[0].offsetWidth;
+        oul.style.width=w* ali.length +'px';
+
+        /*自动滚动*/
+        var timer=setInterval(move,100);
+
+        /*li hover 暂停*/
+        for(var i= 0,len=ali.length;i<len;i++){
+            ali[i].onmouseover=function(){
+                clearInterval(timer);
+            }
+
+            ali[i].onmouseout=function(){
+                timer=setInterval(move,100);
+            }
+        }
+
+
+        /*btn click*/
+        abtn[0].onclick=function(){
+            isSpeed=-10;
+        }
+
+        abtn[1].onclick=function(){
+            isSpeed=10;
+        }
+
+        /*滚动函数*/
+        function move(){
+            oul.style.left = oul.offsetLeft + isSpeed + 'px';
+
+            /*判断左右尽头*/
+            if(oul.offsetLeft <= -oul.offsetWidth / 2 ){
+                oul.style.left = '0px';
+            }else if(oul.offsetLeft >= 0){
+                oul.style.left = -oul.offsetWidth / 2 + 'px';
+            }
+        }
+    }
+</script>
+</html>

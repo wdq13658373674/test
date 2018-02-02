@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF  -8">
+    <title></title>
+
+    <link rel="stylesheet" href="../css/public.css"/>
+    <link rel="stylesheet" href="../css/test.css"/>
+    <script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+    <ul class="img-list">
+        <li><img src="http://res.fjhok.com/res/image/ace09079d2ffea59e296175a37daecb538ec534fb1db78bf2fcc666b1907bc2c.jpg" alt=""/></li>
+        <li><img src="http://res.fjhok.com/res/image/7981fe4dffcabf031091c8d3a222ae9a61d0770368e37af869224552d275edac.jpg" alt=""/></li>
+        <li><img src="http://res.fjhok.com/res/image/1cef6cb982922ef1c30b91ae3a13a89e988d8f2d3e96665cc8ca9fd743a90abc.jpg" alt=""/></li>
+    </ul>
+
+    <div class="process">0%</div>
+</div>
+
+<div class="btn">
+    <a class="prev" data-value="0" href="javascript:void(0);">上一张</a>
+    <a class="next" data-value="1" href="javascript:void(0);;">下一张</a>
+</div>
+</body>
+<script src="../js/preLoad.js"></script>
+<script>
+    $(function(){
+        var img=$('.img-list>li');
+        var imgs=$('.img-list>li>img');
+
+        var btn=$('.btn>a');
+        var process=$('.process');
+        var index=0;
+//        var count=0;
+        var len=img.length;
+
+
+        /*$.each(imgs,function(){
+            var imgObj=new Image();
+
+            $(imgObj).on('load error',function(){
+                var persent= Math.round(count / (len-1) * 100);
+                process.html(persent + '%');
+
+                count++;
+
+                if(persent == 100){
+                    process.hide();
+                }else{
+                    process.show();
+                }
+            });
+
+            imgObj.src=this.src;
+        })*/
+
+        /*插件调用*/
+        $.preLoad(imgs,{
+            each:function(count){
+                var persent= Math.round(count / (len-1) * 100);
+                process.html(persent + '%');
+            },
+            all:function(){
+                process.hide();
+            }
+        })
+
+        /*上下按钮*/
+        img.eq(0).show();
+        btn.click(function(){
+            img.hide();
+
+            /*上一张*/
+            if($(this).data('value') == 0){
+                index=Math.max(0,--index);
+            }
+
+            /*下一张*/
+            if($(this).data('value') == 1){
+                index=Math.min(len-1,++index);
+            }
+
+            document.title=index + '/' + len;
+            img.eq(index).show();
+        })
+    })
+</script>
+</html>

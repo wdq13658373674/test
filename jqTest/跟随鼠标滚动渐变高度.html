@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+</div>
+
+<div class="container" style="height:2000px;">
+    <div class="box" style="position:fixed;top:0;width:200px;height:500px;border:2px solid #000;"></div>
+</div>
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/1.10.0/jquery.min.js"></script>
+<script>
+    $(function(){
+        var before = $(window).scrollTop();
+        $(window).scroll(function (e) {
+            var after = $(this).scrollTop();
+            var delta=after - before;
+            var h=$('.box').height();
+
+            if(delta == 0) return false;
+
+            h-=delta;
+
+            if(h <= 0){
+                h=0;
+            }
+
+            before = after;
+            $('.box').css({
+                height:h + 'px',
+                transition: 'all .5s linear'
+            })
+        })
+    })
+</script>
+</html>

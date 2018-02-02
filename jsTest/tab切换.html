@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        *{margin:0;padding:0;}
+        /*.menu-box{float:left;overflow: hidden;border:1px solid #e5e5e5;border-bottom:none;}
+        .menu-box .menu{cursor:pointer;float: left;list-style:none;width:80px;height:40px;background:orangered;color:#ffffff;line-height:40px;text-align: center;}
+
+        .tab-box{width:240px;height:400px;border:1px solid #e5e5e5;border-top:0;clear: both;}
+        .tab{display:none;}*/
+
+        .menu-box{list-style:none;float:left;background: orangered;color:#ffffff;overflow:hidden;border:1px solid #e5e5e5;border-bottom:none;}
+        .menu-box li{width:80px;height:40px;line-height:40px;float:left;text-align: center;cursor: pointer;}
+        .menu-box li.active{background: #ffffff;color:#000000;}
+
+        .tab-box>div{display:none;width:240px;height:200px;clear:both;border:1px solid #e5e5e5;border-top:none;}
+        .tab-box .active{display:block;}
+    </style>
+</head>
+<body>
+    <ul id="menu-box" class="menu-box">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <div id="tab-box" class="tab-box">
+        <div class="active">
+            1
+        </div>
+        <div>
+            2
+        </div>
+        <div>
+            3
+        </div>
+    </div>
+</body>
+<script>
+    var menu=document.getElementById('menu-box').getElementsByTagName('li');
+    var tab=document.getElementById('tab-box').getElementsByTagName('div');
+
+    for(var i= 0,len=menu.length;i<len;i++){
+        menu[i].onclick=function (){
+            change(this);
+        }
+    }
+
+    function change(self){
+        for(var i= 0,len=menu.length;i<len;i++){
+            if(menu[i] == self){
+                self.className='active';
+                tab[i].className='active';
+            }else{
+                menu[i].className='';
+                tab[i].className='';
+            }
+        }
+    }
+</script>
+</html>

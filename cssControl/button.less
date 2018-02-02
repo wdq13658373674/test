@@ -1,0 +1,59 @@
+/*
+按钮按下
+@red-dark：鼠标按下背景颜色
+*/
+.btn-active(@bg:@red-dark){
+  text-decoration: none;
+  background: @bg;
+  box-shadow: 0 1px 3px #5b0505 inset,0 3px 0 #fff;
+  -moz-box-shadow: 0 1px 3px #5b0505 inset,0 3px 0 #fff;
+  -webkit-box-shadow: 0 1px 3px #5b0505 inset,0 3px 0 #fff;
+}
+
+/*
+.btn-*-full：填充背景的按钮（*表示 red：红色，blue：蓝色）
+@h：按钮高度变量
+通过外部自定义 width 控制按钮宽度
+*/
+.btn-red-full(@h:46px){height:@h;line-height:@h;display:block;background:@red;color:#fff;text-align: center;.round(3px);border:0;
+  &:hover{text-decoration: none; background: @red-light;color: #fff}
+  &:active{
+    .btn-active(@red-dark);
+  }
+}
+
+.btn-blue-full(@h:46px){height:@h;line-height:@h;display:block;background:@blue;color:#fff;text-align: center;.round(3px);border:0;
+  &:hover{text-decoration: none; background: @blue-light;color: #fff}
+  &:active{
+    .btn-active(@blue-dark);
+  }
+}
+
+/*
+.btn-*-empty：没有背景色（即背景色为白色）的按钮（ * 表示 red：红色，blue：蓝色 ，gray：灰色）
+@h：按钮高度变量
+通过外部自定义 width 控制按钮宽度
+*/
+.btn-red-empty(@h:46px){height:@h;line-height:@h - 2;display:block;background: #fff;color:@red;border:1px solid @red;.round(3px);text-align: center;
+  &:hover{text-decoration: none; background: @red;color: #fff}
+  &:active{
+    .btn-active(@red-dark);
+  }
+}
+
+.btn-blue-empty(@h:46px){height:@h;line-height:@h - 2;display:block;background: #fff;color:@blue;border:1px solid @blue;.round(3px);text-align: center;
+  &:hover{text-decoration: none; background: @blue;color: #fff}
+  &:active{
+    .btn-active(@blue-dark);
+  }
+}
+
+.btn-gray-empty(@h:46px){height:@h;line-height:@h - 2;display:block;background: #fff;color:@txt-black;border:1px solid @gray;.round(3px);text-align: center;
+  &:hover{text-decoration: none; background: @gray-bg;color: @txt-black;}
+}
+
+/*
+失效按钮（禁止点击）
+@h：高度变量
+*/
+.btn-disabled(@h:46px){height:@h;line-height:@h - 2;display:block;cursor:not-allowed;background:@disabled-bg;color:@disabled-color;text-align: center;.round(3px);border:1px solid @disabled-border;}
